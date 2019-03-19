@@ -6,9 +6,22 @@
  
  <class name="beans.Employee" table="Employee">
  	<id name="id" column="id"></id>
+ 	<discriminator column="dtype"></discriminator>
  	<property name="name" column="name"></property>
  	<property name="email" column="email"></property>
  	<property name="salary" column="salary"></property>
+ 	
+ 	<subclass name="beans.SoftwareEmployee" discriminator-value="software">
+ 		<property name="tool" column="tool"></property>
+ 	</subclass>
+ 	
+ 	<subclass name="beans.HardwareEmployee" discriminator-value="hardware">
+ 		<property name="wh" column="working_hours"></property>
+ 	</subclass>
+ 	
+ 	<subclass name="beans.AdminEmployee" discriminator-value="admin">
+ 		<property name="branch" column="branch"></property>
+ 	</subclass>
  </class>
  
  </hibernate-mapping>
