@@ -1,0 +1,167 @@
+Hibernate :
+main required componets.
+
+1. Pojo class
+2. one mapping file (student.hbm.xml)
+	1. This is an xml file
+	2. use to map our pojo class with respective table in db
+	3. we need to give class name and tabele name in xml tags<class>
+	4. need to give primary key bygiving name in pojo class and column name in table by giving <id> tag.
+	5. for non primary key properties we need to give <property>
+
+3. one configuration file(hibernate.cfg.xml default recommended name)
+		1. all the tags should be inside <hibernate-configuration><Session-factory>
+		2. DB driver Prperties.
+		3. connection pool properties.(if your db is mysql we need to give mysql dialette)
+		4. hibernate commands
+		5. mapping files
+
+4. one test class(Main)
+
+		1. creating object of student and set all properties.
+		2. we have to create Configuration object. Configuration is container for hibernate.
+			Configuration con=new Configuration();
+			con.configure();-->loading configuration xml (hibernate.cfg.xml)file
+			SessionFactory sf=con.buildSessionFactory();
+			Session s=sf.openSession();
+			s.save(st);
+			s.begin().commit();
+
+		
+
+
+Auto DDL:
+
+1. hbm2ddl.auto(command)
+	1. create:
+		1.It will drop the table if it is exists.
+		2.it will create everytime a new table
+	2. update:
+		1. It will create if we dont have a table.
+		2. if table exixts then  it will alter the table
+	3. validate:
+		1. mapping file columns should be there in the table.
+		2. Table can have more columns than mapping file. If we have less columns in table then we will get exception 
+		   that property not found in table.
+	4. create-drop;
+
+2.CRUD:
+
+		1. insert:
+			save(), persist(),saveorupdate();
+			1. save method will return primary key;
+			2. persist will not return any thing.
+			3. saveorupdate: already if we have data is available in table then it will check with our object date and 			it will update the record.
+
+		2. update:
+			update,merge methods use for update.
+			1. update method some time fail in caching
+					Limitations:
+					1. you must update full record but you can update single column
+			2. merge is recommended.
+					
+		3. delete:
+
+			delete() method:
+				
+		4. Select:
+			1. selecting single record-get(Entity.class,pk),loadget(Entity.class,pk):
+				-get:
+					while calling method itself query fires and it will fetch the record not like 					insert,update,delete.
+					here Transactions are not required:
+					if primary key is not there in the table then we will get null pointer exception
+				-load:
+					while calling non primary key using get methods then it will fire query.
+
+
+3. Hibernate Query Language:
+		Differences b/w HQL and SQL:
+			->HQL is database independent and SQL is database dependent.
+			->we will read data by properties in objects but in sql column names in table.
+			->HQL is hibernate language and SQL is database language.
+
+		CRUD operations:
+			1.insert:
+				->we can dump whole data in one table to another table
+				->we can not insert single record into table like SQL.
+
+				String hql="insert into NewStudent(id,name,mail) select s.id,s.name,s.email from OldStudent s"
+				Query Q=session.createQuery(hql)
+					-->executeupdate() is for DML operations.
+					int i=q.executeUpdate()(returns how many records are affected.)
+
+			2. update: 
+				->we can update primary key also by using other properties.
+			3. delete:-> we can delete records using other properties;
+					hql="delete from NewStudent where name='mohan'"
+					
+				
+			4. Select:
+					methods: uniqueObject(),list().
+					1. uniqueObject() will return Single record
+					2. list() will return multiple records.
+			
+
+
+
+4. Criterias
+			-> we use for select operation based on conditions:
+
+			1. select all:
+			Criteria c = s.createCriteria(Employee.class);
+			List<Employee> list = c.list();
+
+			2.Using condition 
+				select * from Employee where id=101;
+				session s = sf.opensession();
+
+				Criteria c = s.createCriteria(Employee.class);
+				Criterian cr =  Restrictions.eq("id",101);
+				c.add(cr);
+				Employee emp = (Employee)c.UniqueResult();
+		
+				
+				--> Restrictions is nothing but condition.
+				--> At any time we can use multiple Restrictions: c.add(cr1); c.add(cr2)
+			3. Projections:
+				-->it uses for selecting perticular columns or agregate functions
+				-->	Projection p=Projections.property("id");
+					c.setProjection(p)
+				--> we can not set two projections at a time then we will go for ProjectionList
+					Projection p1=Projections.property("id");
+					Projection p2=Projections.property("name");
+
+					ProjectionList plist=Projections.ProjectionList();
+					plist.add(p1);
+					plist.add(p2);
+
+					c.add(plist)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
