@@ -22,7 +22,7 @@ public class Client {
 			
 		
 			
-			String hql="update NewStudent set id=121 where name='mohan'";
+			String hql="delete from NewStudent where name='vinod'";
 			Query  q=session.createQuery(hql);
 			int i=q.executeUpdate();
 			System.out.println(i+"records updated");

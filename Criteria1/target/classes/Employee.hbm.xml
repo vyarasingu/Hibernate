@@ -4,11 +4,11 @@
     
  <hibernate-mapping>
  
- <class name="beans.OldStudent" table="OldStudent">
+ <class name="beans.Employee" table="Employee">
  	<id name="id" column="id"></id>
  	<property name="name" column="name"></property>
  	<property name="email" column="email"></property>
- 	<property name="marks" column="marks"></property>
+ 	<property name="salary" column="salary"></property>
  </class>
  
  </hibernate-mapping>
