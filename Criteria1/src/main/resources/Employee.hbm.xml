@@ -1,27 +1,25 @@
 <!DOCTYPE hibernate-mapping PUBLIC 
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-    
+
  <hibernate-mapping>
- 
  <class name="beans.Employee" table="Employee">
- 	<id name="id" column="id"></id>
- 	<discriminator column="dtype"></discriminator>
- 	<property name="name" column="name"></property>
- 	<property name="email" column="email"></property>
- 	<property name="salary" column="salary"></property>
- 	
- 	<subclass name="beans.SoftwareEmployee" discriminator-value="software">
- 		<property name="tool" column="tool"></property>
- 	</subclass>
- 	
- 	<subclass name="beans.HardwareEmployee" discriminator-value="hardware">
- 		<property name="wh" column="working_hours"></property>
- 	</subclass>
- 	
- 	<subclass name="beans.AdminEmployee" discriminator-value="admin">
- 		<property name="branch" column="branch"></property>
- 	</subclass>
- </class>
  
+ 	<id name="id"></id>
+ 	<property name="name"></property>
+ 	<property name="email"></property>
+ 	<property name="salary"></property>
+ 	
+ 	<union-subclass name="beans.SoftwareEmployee" table="SoftwareEmployee">
+ 		<property name="tool"></property> 		 		 		
+ 	</union-subclass>
+ 	
+  	<union-subclass name="beans.HardwareEmployee" table="HardwareEmployee">
+ 		<property name="wh"></property> 		 		 		
+ 	</union-subclass>
+
+ 	<union-subclass name="beans.AdminEmployee" table="AdminEmployee">
+ 		<property name="branch"></property> 		 		 		
+ 	</union-subclass>
+ </class>
  </hibernate-mapping>
